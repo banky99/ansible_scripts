@@ -26,4 +26,3 @@
       name: htop
       state: latest
     when: ansible_distribution == "ubuntu" and ansible_distribution == "86_64"
-and ansible_distribution == "86_64"
