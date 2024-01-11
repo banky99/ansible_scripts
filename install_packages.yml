@@ -4,13 +4,9 @@
   become: true
   tasks:
 
-  - name: update Respository index
+  - name: update Respository and install packages
     apt:
       update_cache: yes
-    when: ansible_distribution == "Ubuntu"
-
-  - name: install Apache2 php htop and Packages
-    apt:
       name: 
         - apache2
         - libapache2-mod-php
@@ -21,10 +17,6 @@
   - name: update respository index
     dnf:
       update_cache: yes
-    when: ansible_distribution == "Rocky"
-
-  - name: install apache htop and packages
-    dnf: 
       name: 
         - httpd
         - php
