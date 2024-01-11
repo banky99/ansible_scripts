@@ -4,22 +4,12 @@
   become: true
   tasks:
 
-  - name: update Respository and install packages
-    apt:
+  - name: update Respository and install packages on ubuntu and Rocky
+    package:
+      update_only: yes
       update_cache: yes
       name: 
-        - apache2
-        - libapache2-mod-php
-        - htop
+        - "{{apache_package}}"
+        - "{{php_package}}"
+        - "{{htop_package}}"
       state: latest
-    when: ansible_distribution == "Ubuntu"
-
-  - name: update respository index
-    dnf:
-      update_cache: yes
-      name: 
-        - httpd
-        - php
-        - htop
-      state: latest
-    when: ansible_distribution == "Rocky"

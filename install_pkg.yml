@@ -1,0 +1,88 @@
+---
+
+ - hosts: all
+   become: true
+   tasks:
+
+
+   - name: install Updates (Rocky)
+     dnf:
+       update_only: yes
+       update_cache: yes
+     when: ansible_distribution == "Rocky"
+
+   - name: install updates (Ubuntu)
+     apt:
+       update_cache: yes
+     when: ansible_distribution == "Ubuntu"
+
+# play for web servers
+
+ - hosts: web_servers
+   become: true
+   tasks:
+
+   - name: install apache, php and htop for Ubuntu
+     apt: 
+       name:
+         - apache2
+         - htop
+         - libapache2-mod-php
+       state: latest
+     when: ansible_distribution == "Ubuntu"
+
+   - name: install apache, php and htop for Rocky
+     dnf:
+       name:
+         - httpd
+         - php
+         - htop
+       state: latest
+     when: ansible_distribution  == "Rocky"
+
+#install plays for db servers
+
+ - hosts: db_servers
+   become:
+   tasks:
+
+   - name: install mariaDB
+     dnf:
+       name: mariadb
+       state: latest
+     when: ansible_distribution == "Rocky"
+
+   - name: install MariaDb for Ubuntu
+     apt:
+       name: mariadb-server
+       state: latest
+     when: ansible_distribution == "Ubuntu"
+
+
+#install for file server
+
+ - hosts: file_servers
+   become: true
+   tasks:
+
+   - name: Install samba
+     package:
+       name: samba
+       state: latest
+   
+   - name: unzip
+     package: 
+       name: unzip
+       state: latest
+
+   - name: install OpenTofu
+     unarchive:
+       src: https://github.com/opentofu/opentofu/release/download/v1.6.0-rc1/>
+       remote_src: yes
+       mode: 0755
+       owner: root
+       group: root
+
+
+
+
