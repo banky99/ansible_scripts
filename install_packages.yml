@@ -7,22 +7,46 @@
   - name: update Respository index
     apt:
       update_cache: yes
-    when: ansible_distribution == "ubuntu" and ansible_distribution == "86_64"
+    when: ansible_distribution == "Ubuntu"
 
-  - name: install Apache
+  - name: install Apache2 Package
     apt:
       name: apache2
       state: latest
-    when: ansible_distribution == "ubuntu" and ansible_distribution == "86_64"
+    when: ansible_distribution == "Ubuntu"
 
   - name: add php support for apache
     apt:
       name: libapache2-mod-php
       state: latest
-    when: ansible_distribution == "ubuntu" and ansible_distribution == "86_64"
+    when: ansible_distribution == "Ubuntu"
 
   - name: install htop
     apt:
       name: htop
       state: latest
-    when: ansible_distribution == "ubuntu" and ansible_distribution == "86_64"
+    when: ansible_distribution == "Ubuntu"
+
+  - name: update respository index
+    dnf:
+      update_cache: yes
+    when: ansible_distribution == "Rocky"
+
+  - name: install apache
+    dnf: 
+      name: httpd
+      state: latest
+    when: ansible_distribution == "Rocky"
+
+  - name: install php support
+    dnf:
+      name: php
+      state: latest
+    when: ansible_distribution == "Rocky"
+
+  - name: install htop
+    dnf:
+      name: htop
+      state: latest
+    when: ansible_distribution == "Rocky"
+
