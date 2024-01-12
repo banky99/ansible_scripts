@@ -4,7 +4,6 @@
    become: true
    tasks:
 
-
    - name: install Updates (Rocky)
      dnf:
        update_only: yes
@@ -83,6 +82,37 @@
        owner: root
        group: root
 
+# start services
+ - hosts: web_servers
+   become: true
+   tasks:
+
+   - name: start httpd (Rocky)
+     tags: apache,centos,httpd
+     service: 
+       name: httpd
+       state: started
+       enabled: yes
+     when: ansible_distribution == "Rocky"
 
 
+# Restart services after makig chnages to the config file or any change
 
+ - hosts: web_servers
+   become: true
+   tasks:
+ 
+     - name: change e-mail address for admin (Rocky)
+       tags: apache, Rocky, httpd
+       lineinfile:
+         path: /etc/httpd/conf/httpd.conf
+         regexp: '^ServerAdmin'
+         line: ServerAdmin festus.megie@gmail.com
+       when: ansible_distribution == "Rocky"
+       register: httpd
+
+     - name: Restart httpd (Rocky)
+       tags: apache, Rocky, httpd
+       service:
+         name: httpd
+         state: restarted
